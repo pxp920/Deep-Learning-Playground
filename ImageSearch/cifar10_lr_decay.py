@@ -5,7 +5,7 @@ matplotlib.use("Agg")
 # import the necessary packages
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import classification_report
-from pyimagesearch.nn.conv import MiniVGGNet
+from neuralnets.conv.minivggnet import MiniVGGNet
 from keras.callbacks import LearningRateScheduler
 from keras.optimizers import SGD
 from keras.datasets import cifar10
@@ -18,7 +18,7 @@ def step_decay(epoch):
     # initialize the base initial learning rate, drop factor, and
     # epochs to drop every
     initAlpha = 0.01
-    factor = 0.25
+    factor = 0.5
     dropEvery = 2
 
     # compute learning rate for the current epoch
@@ -62,7 +62,7 @@ model.compile(loss="categorical_crossentropy", optimizer=opt,
 
 # train the network
 H = model.fit(trainX, trainY, validation_data=(testX, testY),
-              batch_size=64, epochs=args["epochs"], callbacks=callbacks, verbose=1)
+              batch_size=64, epochs=int(args["epochs"]), callbacks=callbacks, verbose=1)
 
 # evaluate the network
 print("[INFO] evaluating network...")
@@ -73,10 +73,10 @@ print(classification_report(testY.argmax(axis=1),
 # plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, args["epochs"]), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, args["epochs"]), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, args["epochs"]), H.history["acc"], label="train_acc")
-plt.plot(np.arange(0, args["epochs"]), H.history["val_acc"], label="val_acc")
+plt.plot(np.arange(0, int(args["epochs"])), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, int(args["epochs"])), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, int(args["epochs"])), H.history["acc"], label="train_acc")
+plt.plot(np.arange(0, int(args["epochs"])), H.history["val_acc"], label="val_acc")
 plt.title("Training Loss and Accuracy on CIFAR-10")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
